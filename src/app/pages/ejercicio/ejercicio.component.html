@@ -1,0 +1,80 @@
+<div style="margin: 20px;">
+    <h1>Catálogo de Motos</h1>
+  
+    <!-- Filtro de búsqueda -->
+    <div class="mb-3">
+      <label for="busqueda">Buscar por modelo:</label>
+      <input type="text" id="busqueda" [(ngModel)]="busqueda" class="form-control" placeholder="Ingrese el modelo a buscar">
+    </div>
+  
+    <!-- Ordenamiento -->
+    <div class="mb-3">
+      <label for="orden">Ordenar por:</label>
+      <select id="orden" [(ngModel)]="orden" class="form-control">
+        <option value="id">ID</option>
+        <option value="modelo">Modelo</option>
+        <option value="precio">Precio</option>
+      </select>
+    </div>
+  
+    <!-- Tabla de motos -->
+    <div *ngIf="motosFiltradas.length > 0; else noMotos">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Imagen</th>
+            <th>Modelo</th>
+            <th>Precio</th>
+            <th>Seleccionar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let moto of motosFiltradas; trackBy: trackByMoto">
+            <td>{{ moto.id }}</td>
+            <td><img [src]="moto.imagen" alt="{{ moto.modelo }}" width="100"></td>
+            <td>{{ moto.modelo }}</td>
+            <td>{{ moto.precio | currency:'USD' }}</td>
+            <td>
+              <button type="button" class="btn btn-warning" (click)="seleccionarMoto(moto)">Seleccionar</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger" (click)="eliminarMoto(moto.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noMotos>
+      <h3>No hay motos en el catálogo</h3>
+    </ng-template>
+  
+    <!-- Formulario para agregar/modificar motos -->
+    <div class="mt-4">
+      <h3>{{ moto.id ? 'Modificar Moto' : 'Agregar Moto' }}</h3>
+      <div class="mb-3">
+        <label for="id">ID:</label>
+        <input type="number" id="id" [(ngModel)]="moto.id" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" [(ngModel)]="moto.modelo" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" [(ngModel)]="moto.precio" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="imagen">URL de Imagen:</label>
+        <input type="text" id="imagen" [(ngModel)]="moto.imagen" class="form-control" placeholder="Opcional">
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary me-2" (click)="agregarMoto()">Agregar Moto</button>
+        <button type="button" class="btn btn-success" (click)="modificarMoto()">Modificar Moto</button>
+      </div>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>
+  
