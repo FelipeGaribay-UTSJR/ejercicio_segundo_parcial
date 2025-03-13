@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Moto } from '../../models/ejercicio.models';
 import { EjercicioService } from '../../services/ejercicio.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-ejercicio',
@@ -21,31 +22,36 @@ export class EjercicioComponent {
     }
     
     // Método para obtener todos los libros
-    async getLibros(): Promise<void> {
-      this.libros = await firstValueFrom(this.libroService.getLibros());
+    async getMotos(): Promise<void> {
+      this.motos = await firstValueFrom(this.ejercicioService.getMotos());
     }
   
   //metodo para insertar un libro desde el form
   
-  insertarLibro(){
-    this.libroService.agregarLibro(this.libro);
-    this.libro = new Libro();
-    this.getLibros();
+  insertarMoto(){
+    this.ejercicioService.agregarMoto(this.moto);
+    this.moto = new Moto();
+    this.getMotos();
   }
   //metodo para seleccionar un libro de la tabla
-  selectLibro(libroSeleccionado:Libro){
-    this.libro = libroSeleccionado;
+  selectMoto(motoSeleccionado:Moto){
+    this.moto = motoSeleccionado;
   }
   //metodo para modificar libro en form
-  UpdateLibro(){
-    this.libroService.modificarLibro(this.libro);
-    this.libro = new Libro();
-    this.getLibros();
+  UpdateMoto(){
+    this.ejercicioService.modificarMoto(this.moto);
+    this.moto = new Moto();
+    this.getMotos();
   }
   //metodo para eliminar libro
-  deleteLibro(){
-    this.libroService.eliminarLibro(this.libro);
-    this.libro = new Libro();
-    this.getLibros();
+  deleteMoto(){
+    this.ejercicioService.eliminarMoto(this.moto);
+    this.moto = new Moto();
+    this.getMotos();
   }
+
+  trackByMoto(index: number, moto: Moto) {
+    return moto.id;
+  }
+  
 }
